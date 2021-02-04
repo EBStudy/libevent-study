@@ -32,7 +32,7 @@ static void timeout_cb(evutil_socket_t fd, short sevent, void *arg)
         tv.tv_sec = 2;
         event_add(timeout, &tv);
     }
-    event_del(timeout);
+//    event_del(timeout);
 }
 
 int main(int argc, char *argv[])
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     auto *event_base = event_base_new();
     event timeout;
     timeval tv;
-    event_assign(&timeout, event_base, -1, EV_PERSIST,timeout_cb,(void*)&timeout);
+    event_assign(&timeout, event_base, -1, 0,timeout_cb,(void*)&timeout);
     evutil_timerclear(&tv);
     tv.tv_sec = 2;
     event_add(&timeout, &tv);
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     setbuf(stdout, NULL);
     setbuf(stderr, NULL);
 
-//    event_base_dispatch(event_base);
-    event_base_loop(event_base,EVLOOP_NO_EXIT_ON_EMPTY);
+    event_base_dispatch(event_base);
+//    event_base_loop(event_base,EVLOOP_NO_EXIT_ON_EMPTY);
     return 0;
 }
